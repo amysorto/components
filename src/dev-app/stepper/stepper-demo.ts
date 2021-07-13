@@ -6,14 +6,15 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
+import {STEPPER_GLOBAL_OPTIONS} from '@angular/cdk/stepper';
 import {Component, OnInit} from '@angular/core';
 import {ThemePalette} from '@angular/material/core';
 import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
 
-
 @Component({
   selector: 'stepper-demo',
   templateUrl: 'stepper-demo.html',
+  providers: [{provide: STEPPER_GLOBAL_OPTIONS, useValue: {showError: true}}],
 })
 export class StepperDemo implements OnInit {
   formGroup: FormGroup;
@@ -25,6 +26,9 @@ export class StepperDemo implements OnInit {
 
   nameFormGroup: FormGroup;
   emailFormGroup: FormGroup;
+
+  verticalFirstFormGroup!: FormGroup;
+  verticalSecondFormGroup!: FormGroup;
 
   steps = [
     {label: 'Confirm your name', content: 'Last name, First name.'},
@@ -44,7 +48,7 @@ export class StepperDemo implements OnInit {
   /** Returns a FormArray with the name 'formArray'. */
   get formArray(): AbstractControl | null { return this.formGroup.get('formArray'); }
 
-  constructor(private _formBuilder: FormBuilder) { }
+  constructor(private _formBuilder: FormBuilder) {}
 
   ngOnInit() {
     this.formGroup = this._formBuilder.group({
@@ -67,5 +71,8 @@ export class StepperDemo implements OnInit {
     this.emailFormGroup = this._formBuilder.group({
       emailCtrl: ['', Validators.email]
     });
+
+    this.verticalFirstFormGroup = this._formBuilder.group({firstCtrl: ''});
+    this.verticalSecondFormGroup = this._formBuilder.group({secondCtrl: ''});
   }
 }

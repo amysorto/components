@@ -167,3 +167,8 @@
     border: none;
   }
 }
+
+.mat-step-screen-reader-error {
+  // TODO: still takes up space on the page, needs to be in the DOM but not visible
+  visibility: hidden;
+}

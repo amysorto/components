@@ -21,6 +21,50 @@
   </mat-form-field>
 </p>
 
+<section>
+    <h2>Vertical stepper</h2>
+    <p>
+        The following demo shows a vertical stepper. An error message is displayed on the first
+        step if there is no text for the input field when navigating to a different step.
+    </p>
+    <mat-vertical-stepper #verticalStepper>
+        <mat-step [stepControl]="verticalFirstFormGroup" errorMessage="Name is required.">
+            <form [formGroup]="verticalFirstFormGroup" class="demo-step-form">
+                <ng-template matStepLabel>Fill out your name</ng-template>
+                <mat-form-field>
+                    <mat-label>Name</mat-label>
+                    <input matInput placeholder="Last name, First name" formControlName="firstCtrl" required>
+                </mat-form-field>
+                <div>
+                    <button mat-button matStepperNext type="button">Next</button>
+                </div>
+            </form>
+            <mat-step-screen-reader-error>This is the step 1's error for screen reader!</mat-step-screen-reader-error>
+        </mat-step>
+        <mat-step [stepControl]="verticalSecondFormGroup" optional>
+            <form [formGroup]="verticalSecondFormGroup" class="demo-step-form">
+                <ng-template matStepLabel>Fill out your address</ng-template>
+                <mat-form-field>
+                    <mat-label>Address</mat-label>
+                    <input matInput formControlName="secondCtrl" placeholder="Ex. 1 Main St, New York, NY">
+                </mat-form-field>
+                <div>
+                    <button mat-button matStepperPrevious type="button">Back</button>
+                    <button mat-button matStepperNext type="button">Next</button>
+                </div>
+            </form>
+        </mat-step>
+        <mat-step>
+            <ng-template matStepLabel>Done</ng-template>
+            <p>You are now done.</p>
+            <div>
+                <button mat-button matStepperPrevious type="button">Back</button>
+                <button mat-button (click)="verticalStepper.reset()" type="reset">Reset</button>
+            </div>
+        </mat-step>
+    </mat-vertical-stepper>
+</section>
+
 <h3>Linear Stepper Demo using a single form</h3>
 <form [formGroup]="formGroup">
   <mat-stepper

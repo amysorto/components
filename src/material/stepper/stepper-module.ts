@@ -15,7 +15,7 @@ import {ErrorStateMatcher, MatCommonModule, MatRippleModule} from '@angular/mate
 import {MatIconModule} from '@angular/material/icon';
 import {MatStepHeader} from './step-header';
 import {MatStepLabel} from './step-label';
-import {MatHorizontalStepper, MatStep, MatStepper, MatVerticalStepper} from './stepper';
+import {MatHorizontalStepper, MatStep, MatStepScreenReaderError, MatStepper, MatVerticalStepper} from './stepper';
 import {MatStepperNext, MatStepperPrevious} from './stepper-button';
 import {MatStepperIcon} from './stepper-icon';
 import {MAT_STEPPER_INTL_PROVIDER} from './stepper-intl';
@@ -35,6 +35,7 @@ import {MatStepContent} from './step-content';
   exports: [
     MatCommonModule,
     MatStep,
+    MatStepScreenReaderError,
     MatStepLabel,
     MatStepper,
     MatStepperNext,
@@ -47,6 +48,7 @@ import {MatStepContent} from './step-content';
     MatHorizontalStepper,
     MatVerticalStepper,
     MatStep,
+    MatStepScreenReaderError,
     MatStepLabel,
     MatStepper,
     MatStepperNext,

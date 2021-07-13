@@ -6,6 +6,7 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
+import {LiveAnnouncer} from '@angular/cdk/a11y';
 import {Directionality} from '@angular/cdk/bidi';
 import {
   CdkStep,
@@ -34,6 +35,7 @@ import {
   QueryList,
   SkipSelf,
   TemplateRef,
+  ViewChild,
   ViewChildren,
   ViewContainerRef,
   ViewEncapsulation,
@@ -50,6 +52,16 @@ import {MatStepLabel} from './step-label';
 import {matStepperAnimations} from './stepper-animations';
 import {MatStepperIcon, MatStepperIconContext} from './stepper-icon';
 import {MatStepContent} from './step-content';
+import {MatStepperIntl} from './stepper-intl';
+
+/** Error message for a specific step that gets projected into MatStep */
+@Directive({
+    selector: 'mat-step-screen-reader-error',
+    host: {
+        'class': 'mat-step-screen-reader-error',
+    },
+})
+export class MatStepScreenReaderError {}
 
 @Component({
   selector: 'mat-step',
@@ -77,6 +89,10 @@ export class MatStep extends CdkStep implements ErrorStateMatcher, AfterContentI
   /** Currently-attached portal containing the lazy content. */
   _portal: TemplatePortal;
 
+  // Note: I tried also making the type MatStepScreenReaderError
+  @ContentChild('matStepScreenReaderError') screenReaderError: ElementRef;
+
+
   constructor(@Inject(forwardRef(() => MatStepper)) stepper: MatStepper,
               @SkipSelf() private _errorStateMatcher: ErrorStateMatcher,
               private _viewContainerRef: ViewContainerRef,
@@ -95,6 +111,9 @@ export class MatStep extends CdkStep implements ErrorStateMatcher, AfterContentI
         this._portal = new TemplatePortal(this._lazyContent._template, this._viewContainerRef!);
       }
     });
+
+    // Screen reader error is not set here
+    console.log(this.screenReaderError);
   }
 
   ngOnDestroy() {
@@ -173,7 +192,9 @@ export class MatVerticalStepper extends _MatProxyStepperBase {}
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class MatStepper extends CdkStepper implements AfterContentInit {
+export class MatStepper extends CdkStepper implements AfterContentInit, OnDestroy {
+  private _lastErrorSubscription: Subscription;
+
   /** The list of step headers of the steps in the stepper. */
   @ViewChildren(MatStepHeader) override _stepHeader: QueryList<MatStepHeader>;
 
@@ -212,10 +233,25 @@ export class MatStepper extends CdkStepper implements AfterContentInit {
     @Optional() dir: Directionality,
     changeDetectorRef: ChangeDetectorRef,
     elementRef: ElementRef<HTMLElement>,
-    @Inject(DOCUMENT) _document: any) {
-    super(dir, changeDetectorRef, elementRef, _document);
-    const nodeName = elementRef.nativeElement.nodeName.toLowerCase();
-    this.orientation = nodeName === 'mat-vertical-stepper' ? 'vertical' : 'horizontal';
+    @Inject(DOCUMENT) _document: any,
+    public _intl: MatStepperIntl,
+    private _liveAnnouncer: LiveAnnouncer) {
+      super(dir, changeDetectorRef, elementRef, _document);
+      const nodeName = elementRef.nativeElement.nodeName.toLowerCase();
+      this.orientation = nodeName === 'mat-vertical-stepper' ? 'vertical' : 'horizontal';
+
+      // When the step changes, screen reader announces custom step error message if applicable
+      this._lastErrorSubscription = this.selectionChange.subscribe(selectionEvent => {
+        const lastStep = selectionEvent.previouslySelectedStep;
+        console.log(lastStep);  // Shows the screenReaderError field but is also not set there
+        // console.log(lastStep.content.elementRef.nativeElement.innerHTML)
+        if (lastStep.hasError) {
+          // TODO: replace with error screenReaderError
+          const errorMsg = lastStep.errorMessage;
+          this._liveAnnouncer.announce(errorMsg);
+        }
+
+      });
   }
 
   override ngAfterContentInit() {
@@ -238,6 +274,11 @@ export class MatStepper extends CdkStepper implements AfterContentInit {
         this.animationDone.emit();
       }
     });
+  }
+
+  override ngOnDestroy() {
+    super.ngOnDestroy();
+    this._lastErrorSubscription.unsubscribe();
   }
 
   _stepIsNavigable(index: number, step: MatStep): boolean {
