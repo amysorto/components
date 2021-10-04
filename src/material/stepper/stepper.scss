@@ -1,21 +1,68 @@
 @use 'sass:math';
 @use '../core/style/variables';
+@use '../core/style/vendor-prefixes';
 @use './stepper-variables';
 @use '../../cdk/a11y';
+
+.mat-step-header-pagination {
+  @include vendor-prefixes.user-select(none);;
+  position: relative;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  min-width: 32px;
+  cursor: pointer;
+  z-index: 2;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: none;
+
+  .mat-step-header-pagination-controls-enabled & {
+    display: flex;
+  }
+}
+
+// The pagination control that is displayed on the left side of the step header.
+.mat-step-header-pagination-before, .mat-step-header-rtl .mat-step-header-pagination-after {
+  padding-left: 4px;
+  .mat-step-header-pagination-chevron {
+    transform: rotate(-135deg);
+  }
+}
+
+// The pagination control that is displayed on the right side of the step header.
+.mat-step-header-rtl .mat-step-header-pagination-before, .mat-step-header-pagination-after {
+  padding-right: 4px;
+  .mat-step-header-pagination-chevron {
+    transform: rotate(45deg);
+  }
+}
+
+.mat-step-header-pagination-chevron {
+  border-style: solid;
+  border-width: 2px 2px 0 0;
+  content: '';
+  height: 8px;
+  width: 8px;
+}
+
+.mat-step-header-pagination-disabled {
+  box-shadow: none;
+  cursor: default;
+}
+
+.mat-step-list {
+  flex-grow: 1;
+  position: relative;
+  transition: transform 500ms cubic-bezier(0.35, 0, 0.25, 1);
+}
 
 .mat-stepper-vertical,
 .mat-stepper-horizontal {
   display: block;
 }
 
-.mat-horizontal-stepper-header-container {
-  white-space: nowrap;
+.mat-stepper-pagination-container{
   display: flex;
-  align-items: center;
-
-  .mat-stepper-label-position-bottom & {
-    align-items: flex-start;
-  }
 }
 
 .mat-stepper-horizontal-line {
@@ -97,6 +144,34 @@
       width: 100%;
     }
   }
+}
+
+.mat-horizontal-stepper-header-container {
+  align-items: center;
+  display: flex;
+  flex-grow: 1;
+  overflow: hidden;
+  white-space: nowrap;
+  z-index: 1;
+
+  .mat-stepper-label-position-bottom & {
+    align-items: flex-start;
+  }
+}
+
+@mixin mat-horizontal-stepper-header-container-content {
+  display: flex;
+  flex-grow: 1;
+}
+
+.mat-horizontal-stepper-header-container-content-label-position-bottom {
+  @include mat-horizontal-stepper-header-container-content;
+  align-items: stretch;
+}
+
+.mat-horizontal-stepper-header-container-content-label-position-end {
+  @include mat-horizontal-stepper-header-container-content;
+  align-items:center;
 }
 
 .mat-vertical-stepper-header {

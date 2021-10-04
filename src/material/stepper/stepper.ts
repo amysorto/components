@@ -34,9 +34,11 @@ import {
   QueryList,
   SkipSelf,
   TemplateRef,
+  ViewChild,
   ViewChildren,
   ViewContainerRef,
   ViewEncapsulation,
+  NgZone,
 } from '@angular/core';
 import {FormControl, FormGroupDirective, NgForm} from '@angular/forms';
 import {DOCUMENT} from '@angular/common';
@@ -50,6 +52,10 @@ import {MatStepLabel} from './step-label';
 import {matStepperAnimations} from './stepper-animations';
 import {MatStepperIcon, MatStepperIconContext} from './stepper-icon';
 import {MatStepContent} from './step-content';
+import {MatPaginatedStepHeader} from './paginated-step-header';
+import {Platform} from '@angular/cdk/platform';
+import {ViewportRuler} from '@angular/cdk/scrolling';
+import {ANIMATION_MODULE_TYPE} from '@angular/platform-browser/animations';
 
 @Component({
   selector: 'mat-step',
@@ -144,13 +150,12 @@ export class MatHorizontalStepper extends _MatProxyStepperBase {}
 @Directive({selector: 'mat-vertical-stepper'})
 export class MatVerticalStepper extends _MatProxyStepperBase {}
 
-
 @Component({
   selector: 'mat-stepper, mat-vertical-stepper, mat-horizontal-stepper, [matStepper]',
   exportAs: 'matStepper, matVerticalStepper, matHorizontalStepper',
   templateUrl: 'stepper.html',
   styleUrls: ['stepper.css'],
-  inputs: ['selectedIndex'],
+  inputs: ['selectedIndex', 'color'],
   host: {
     '[class.mat-stepper-horizontal]': 'orientation === "horizontal"',
     '[class.mat-stepper-vertical]': 'orientation === "vertical"',
@@ -160,6 +165,11 @@ export class MatVerticalStepper extends _MatProxyStepperBase {}
         'orientation === "horizontal" && labelPosition == "bottom"',
     '[attr.aria-orientation]': 'orientation',
     'role': 'tablist',
+    '[class.mat-step-header-pagination-controls-enabled]': '_showPaginationControls',
+    '[class.mat-step-header-rtl]': "_getLayoutDirection() == 'rtl'",
+    '[class.mat-primary]': 'color !== "warn" && color !== "accent"',
+    '[class.mat-accent]': 'color === "accent"',
+    '[class.mat-warn]': 'color === "warn"',
   },
   animations: [
     matStepperAnimations.horizontalStepTransition,
@@ -173,7 +183,15 @@ export class MatVerticalStepper extends _MatProxyStepperBase {}
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class MatStepper extends CdkStepper implements AfterContentInit {
+export class MatStepper extends MatPaginatedStepHeader implements AfterContentInit {
+  @ViewChild('stepListContainer', {static: false}) _stepListContainer: ElementRef;
+  @ViewChild('stepList', {static: false}) _stepList: ElementRef;
+  @ViewChild('nextPaginator') _nextPaginator: ElementRef<HTMLElement>;
+  @ViewChild('previousPaginator') _previousPaginator: ElementRef<HTMLElement>;
+  protected _itemSelected(event: KeyboardEvent): void {
+    // noop
+  }
+
   /** The list of step headers of the steps in the stepper. */
   @ViewChildren(MatStepHeader) override _stepHeader: QueryList<MatStepHeader>;
 
@@ -210,10 +228,13 @@ export class MatStepper extends CdkStepper implements AfterContentInit {
 
   constructor(
     @Optional() dir: Directionality,
+    elementRef: ElementRef,
     changeDetectorRef: ChangeDetectorRef,
-    elementRef: ElementRef<HTMLElement>,
-    @Inject(DOCUMENT) _document: any) {
-    super(dir, changeDetectorRef, elementRef, _document);
+    ngZone: NgZone,
+    viewportRuler: ViewportRuler,
+    platform: Platform,
+    @Optional() @Inject(ANIMATION_MODULE_TYPE) animationMode?: string) {
+      super(elementRef, changeDetectorRef, viewportRuler, dir, ngZone, platform, animationMode);
     const nodeName = elementRef.nativeElement.nodeName.toLowerCase();
     this.orientation = nodeName === 'mat-vertical-stepper' ? 'vertical' : 'horizontal';
   }

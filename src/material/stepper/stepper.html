@@ -1,13 +1,40 @@
 <ng-container [ngSwitch]="orientation">
+
   <!-- Horizontal stepper -->
   <ng-container *ngSwitchCase="'horizontal'">
-    <div class="mat-horizontal-stepper-header-container">
-      <ng-container *ngFor="let step of steps; let i = index; let isLast = last">
-        <ng-container
-          [ngTemplateOutlet]="stepTemplate"
-          [ngTemplateOutletContext]="{step: step, i: i}"></ng-container>
-        <div *ngIf="!isLast" class="mat-stepper-horizontal-line"></div>
-      </ng-container>
+    <div class="mat-stepper-pagination-container">
+      <div class="mat-step-header-pagination mat-step-header-pagination-before mat-elevation-z4"
+        #previousPaginator
+        aria-hidden="true"
+        mat-ripple [matRippleDisabled]="disableRipple"
+        [class.mat-step-header-pagination-disabled]="false"
+        (click)="_handlePaginatorClick('before')"
+        (mousedown)="_handlePaginatorPress('before')"
+        (touchend)="_stopInterval()">
+        <div class="mat-step-header-pagination-chevron"></div>
+      </div>
+
+      <div class="mat-horizontal-stepper-header-container" #stepListContainer>
+        <div [ngClass]="'mat-horizontal-stepper-header-container-content-label-position-' + labelPosition" #stepList>
+          <ng-container *ngFor="let step of steps; let i = index; let isLast = last">
+            <ng-container
+              [ngTemplateOutlet]="stepTemplate"
+              [ngTemplateOutletContext]="{step: step, i: i}"></ng-container>
+            <div *ngIf="!isLast" class="mat-stepper-horizontal-line"></div>
+          </ng-container>
+        </div>
+      </div>
+
+      <div class="mat-step-header-pagination mat-step-header-pagination-after mat-elevation-z4"
+      #nextPaginator
+      aria-hidden="true"
+      mat-ripple [matRippleDisabled]="disableRipple"
+      [class.mat-step-header-pagination-disabled]="false"
+      (mousedown)="_handlePaginatorPress('after')"
+      (click)="_handlePaginatorClick('after')"
+      (touchend)="_stopInterval()">
+        <div class="mat-step-header-pagination-chevron"></div>
+      </div>
     </div>
 
     <div class="mat-horizontal-content-container">
