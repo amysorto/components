@@ -23,8 +23,6 @@
     $is-dark: map.get($config, is-dark);
 
     .mat-mdc-fab, .mat-mdc-mini-fab {
-      @include button-theme-private.ripple-theme-styles($config, true);
-
       &.mat-unthemed {
         @include _fab-variant($on-surface, mdc-theme-color.prop-value(surface));
       }
@@ -64,7 +62,7 @@
   $config: typography.private-typography-to-2018-config(
       theming.get-typography-config($config-or-theme));
   @include mdc-helpers.mat-using-mdc-typography($config) {
-    @include mdc-fab.without-ripple($query: mdc-helpers.$mat-typography-styles-query);
+    @include mdc-fab.core-styles($query: mdc-helpers.$mat-typography-styles-query);
   }
 }
 

@@ -5,7 +5,7 @@
 @use './button-base';
 
 @include mdc-helpers.disable-fallback-declarations {
-  @include mdc-fab.without-ripple($query: mdc-helpers.$mat-base-styles-query);
+  @include mdc-fab.core-styles($query: mdc-helpers.$mat-base-styles-query);
 }
 
 .mat-mdc-fab, .mat-mdc-mini-fab {
@@ -15,11 +15,11 @@
 
   @include mdc-helpers.disable-fallback-declarations {
     // Theme configuration is copied over from MDC, because it isn't exported
-    @include mdc-fab.theme-styles(button-base.mat-private-button-remove-ripple((
+    @include mdc-fab.theme-styles((
       container-color: transparent,
       container-shape: mdc-fab.$shape-radius,
       icon-color: inherit,
-    )));
+    ));
 
     // TODO(crisbeto): the elevation can be controlled using `container-elevation` in `theme-styles`
     // however when it is passed in, MDC throws an error that `container-shadow-color` isn't

@@ -7,13 +7,13 @@
  */
 
 import {NgModule} from '@angular/core';
-import {MatCommonModule, MatRippleModule} from '@angular/material-experimental/mdc-core';
+import {MatCommonModule} from '@angular/material-experimental/mdc-core';
 import {MatAnchor, MatButton} from './button';
 import {MatFabAnchor, MatFabButton, MatMiniFabAnchor, MatMiniFabButton} from './fab';
 import {MatIconAnchor, MatIconButton} from './icon-button';
 
 @NgModule({
-  imports: [MatCommonModule, MatRippleModule],
+  imports: [MatCommonModule],
   exports: [
     MatAnchor,
     MatButton,

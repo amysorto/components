@@ -13,29 +13,6 @@
     $is-dark: map.get($config, is-dark);
     $on-surface: mdc-theme-color.prop-value(on-surface);
     $disabled-color: rgba($on-surface, if($is-dark, 0.5, 0.38));
-
-    .mat-mdc-icon-button {
-      @include button-theme-private.ripple-theme-styles($config, false);
-
-      &.mat-primary {
-        @include mdc-icon-button-theme.theme((icon-color: mdc-theme-color.prop-value(primary)));
-      }
-
-      &.mat-accent {
-        @include mdc-icon-button-theme.theme((icon-color: mdc-theme-color.prop-value(secondary)));
-      }
-
-      &.mat-warn {
-        @include mdc-icon-button-theme.theme((icon-color: (mdc-theme-color.prop-value(error))));
-      }
-
-      @include button-theme-private.apply-disabled-style() {
-        @include mdc-icon-button-theme.theme((
-          icon-color: $disabled-color,
-          disabled-icon-color: $disabled-color,
-        ));
-      }
-    }
   }
 }
 
@@ -43,16 +20,12 @@
   $config: typography.private-typography-to-2018-config(
       theming.get-typography-config($config-or-theme));
   @include mdc-helpers.mat-using-mdc-typography($config) {
-    @include mdc-icon-button.without-ripple($query: mdc-helpers.$mat-typography-styles-query);
+    @include mdc-icon-button.core-styles($query: mdc-helpers.$mat-typography-styles-query);
   }
 }
 
 @mixin density($config-or-theme) {
   $density-scale: theming.get-density-config($config-or-theme);
-  .mat-mdc-icon-button {
-    @include mdc-icon-button.density($density-scale, $query: mdc-helpers.$mat-base-styles-query);
-    @include button-theme-private.touch-target-density($density-scale);
-  }
 }
 
 @mixin theme($theme-or-color-config) {

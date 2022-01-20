@@ -167,15 +167,6 @@
         ));
       }
     }
-
-    // Ripple colors
-    .mat-mdc-button, .mat-mdc-outlined-button {
-      @include button-theme-private.ripple-theme-styles($config, false);
-    }
-
-    .mat-mdc-raised-button, .mat-mdc-unelevated-button {
-      @include button-theme-private.ripple-theme-styles($config, true);
-    }
   }
 }
 
@@ -183,7 +174,7 @@
   $config: typography.private-typography-to-2018-config(
       theming.get-typography-config($config-or-theme));
   @include mdc-helpers.mat-using-mdc-typography($config) {
-    @include mdc-button.without-ripple($query: mdc-helpers.$mat-typography-styles-query);
+    @include mdc-button.core-styles($query: mdc-helpers.$mat-typography-styles-query);
   }
 }
 

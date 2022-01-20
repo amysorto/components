@@ -9,35 +9,6 @@
 // ripple and state container so that they fill the button, match the border radius, and avoid
 // pointer events.
 @mixin mat-private-button-interactive() {
-  // The ripple container should match the bounds of the entire button.
-  .mat-mdc-button-ripple,
-  .mat-mdc-button-persistent-ripple,
-  .mat-mdc-button-persistent-ripple::before {
-    @include layout-common.fill;
-
-    // Disable pointer events for the ripple container and state overlay because the container
-    // will overlay the user content and we don't want to disable mouse events on the user content.
-    // Pointer events can be safely disabled because the ripple trigger element is the host element.
-    pointer-events: none;
-
-    // Inherit the border radius from the parent so that state overlay and ripples don't exceed the
-    // parent button boundaries. Note that an inherited border radius does not work properly if
-    // the actual button element does have a border because it causes the inner content to be
-    // smaller. We have special logic for stroked buttons to handle this scenario.
-    border-radius: inherit;
-  }
-
-  // We use ::before so that we can reuse some of MDC's theming.
-  .mat-mdc-button-persistent-ripple::before {
-    content: '';
-    opacity: 0;
-    background-color: var(--mat-mdc-button-persistent-ripple-color);
-  }
-
-  .mat-ripple-element {
-    background-color: var(--mat-mdc-button-ripple-color);
-  }
-
   // The content should appear over the state and ripple layers, otherwise they may adversely affect
   // the accessibility of the text content.
   .mdc-button__label {
@@ -75,16 +46,4 @@
       $set-width: $is-square,
       $query: mdc-helpers.$mat-base-styles-query);
   }
-}
-
-// Changes a button theme to exclude the ripple styles.
-@function mat-private-button-remove-ripple($theme) {
-  @return map.merge($theme, (
-    focus-state-layer-color: null,
-    focus-state-layer-opacity: null,
-    hover-state-layer-color: null,
-    hover-state-layer-opacity: null,
-    pressed-state-layer-color: null,
-    pressed-state-layer-opacity: null,
-  ));
 }
