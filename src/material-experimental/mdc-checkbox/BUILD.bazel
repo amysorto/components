@@ -23,6 +23,7 @@ ng_module(
     deps = [
         "//src/cdk/coercion",
         "//src/material-experimental/mdc-core",
+        "//src/material-experimental/mdc-ripple",
         "//src/material/checkbox",
         "@npm//@angular/animations",
         "@npm//@angular/core",

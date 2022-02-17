@@ -35,7 +35,6 @@ import {
   mixinDisabled,
   CanColor,
   CanDisable,
-  MatRipple,
 } from '@angular/material-experimental/mdc-core';
 import {ANIMATION_MODULE_TYPE} from '@angular/platform-browser/animations';
 import {MDCCheckboxAdapter, MDCCheckboxFoundation} from '@material/checkbox';
@@ -184,9 +183,6 @@ export class MatCheckbox
 
   /** The native label element. */
   @ViewChild('label') _label: ElementRef<HTMLElement>;
-
-  /** Reference to the ripple instance of the checkbox. */
-  @ViewChild(MatRipple) ripple: MatRipple;
 
   /** Returns the unique id for the visual hidden input. */
   get inputId(): string {

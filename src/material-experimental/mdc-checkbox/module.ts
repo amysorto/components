@@ -8,11 +8,12 @@
 
 import {NgModule} from '@angular/core';
 import {_MatCheckboxRequiredValidatorModule} from '@angular/material/checkbox';
-import {MatCommonModule, MatRippleModule} from '@angular/material-experimental/mdc-core';
+import {MatCommonModule} from '@angular/material-experimental/mdc-core';
 import {MatCheckbox} from './checkbox';
+import {MdcRippleModule} from '../mdc-ripple';
 
 @NgModule({
-  imports: [MatCommonModule, MatRippleModule, _MatCheckboxRequiredValidatorModule],
+  imports: [MatCommonModule, MdcRippleModule, _MatCheckboxRequiredValidatorModule],
   exports: [MatCheckbox, MatCommonModule, _MatCheckboxRequiredValidatorModule],
   declarations: [MatCheckbox],
 })
