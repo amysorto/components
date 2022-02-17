@@ -24,6 +24,7 @@ ng_module(
         "//src/cdk/overlay",
         "//src/cdk/scrolling",
         "//src/material-experimental/mdc-core",
+        "//src/material-experimental/mdc-ripple",
         "//src/material/menu",
         "@npm//@angular/animations",
         "@npm//@angular/common",

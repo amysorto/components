@@ -8,15 +8,16 @@
 
 import {CommonModule} from '@angular/common';
 import {NgModule} from '@angular/core';
-import {MatCommonModule, MatRippleModule} from '@angular/material-experimental/mdc-core';
+import {MatCommonModule} from '@angular/material-experimental/mdc-core';
 import {OverlayModule} from '@angular/cdk/overlay';
 import {CdkScrollableModule} from '@angular/cdk/scrolling';
 import {MAT_MENU_SCROLL_STRATEGY_FACTORY_PROVIDER, MatMenu} from './menu';
 import {MatMenuItem} from './menu-item';
 import {MatMenuContent, MatMenuTrigger} from './directives';
+import {MdcRippleModule} from '../mdc-ripple';
 
 @NgModule({
-  imports: [CommonModule, MatRippleModule, MatCommonModule, OverlayModule],
+  imports: [CommonModule, MdcRippleModule, MatCommonModule, OverlayModule],
   exports: [
     CdkScrollableModule,
     MatMenu,

@@ -28,6 +28,7 @@ import {MatMenuItem as BaseMatMenuItem} from '@angular/material/menu';
     '[attr.tabindex]': '_getTabIndex()',
     '[attr.aria-disabled]': 'disabled',
     '[attr.disabled]': 'disabled || null',
+    '[attr.matRipple]': 'true',
   },
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
