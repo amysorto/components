@@ -15,7 +15,8 @@
     [attr.aria-describedby]="ariaDescribedby"
     [attr.aria-required]="required || null"
     (click)="_handleClick($event)"
-    #switch>
+    #switch
+    matRipple>
     <div class="mdc-switch__track"></div>
     <div class="mdc-switch__handle-track">
       <div class="mdc-switch__handle">
@@ -23,12 +24,8 @@
           <div class="mdc-elevation-overlay"></div>
         </div>
         <div class="mdc-switch__ripple">
-          <div class="mat-mdc-slide-toggle-ripple mat-mdc-focus-indicator" mat-ripple
-            [matRippleTrigger]="switch"
-            [matRippleDisabled]="disableRipple || disabled"
-            [matRippleCentered]="true"></div>
         </div>
-        <div class="mdc-switch__icons">
+          <div class="mdc-switch__icons">
           <svg class="mdc-switch__icon mdc-switch__icon--on" viewBox="0 0 24 24">
             <path d="M19.69,5.23L8.96,15.96l-4.23-4.23L2.96,13.5l6,6L21.46,7L19.69,5.23z" />
           </svg>

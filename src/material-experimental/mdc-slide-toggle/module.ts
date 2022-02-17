@@ -8,12 +8,13 @@
 
 import {CommonModule} from '@angular/common';
 import {NgModule} from '@angular/core';
-import {MatCommonModule, MatRippleModule} from '@angular/material-experimental/mdc-core';
+import {MatCommonModule} from '@angular/material-experimental/mdc-core';
 import {_MatSlideToggleRequiredValidatorModule} from '@angular/material/slide-toggle';
 import {MatSlideToggle} from './slide-toggle';
+import {MdcRippleModule} from '../mdc-ripple';
 
 @NgModule({
-  imports: [_MatSlideToggleRequiredValidatorModule, MatCommonModule, MatRippleModule, CommonModule],
+  imports: [_MatSlideToggleRequiredValidatorModule, MatCommonModule, MdcRippleModule, CommonModule],
   exports: [_MatSlideToggleRequiredValidatorModule, MatSlideToggle, MatCommonModule],
   declarations: [MatSlideToggle],
 })
