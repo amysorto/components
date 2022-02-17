@@ -38,17 +38,7 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
-import {
-  CanDisableRipple,
-  MatRipple,
-  MAT_RIPPLE_GLOBAL_OPTIONS,
-  mixinColor,
-  mixinDisableRipple,
-  RippleAnimationConfig,
-  RippleGlobalOptions,
-  RippleRef,
-  RippleState,
-} from '@angular/material/core';
+import {CanDisableRipple, mixinColor, mixinDisableRipple} from '@angular/material/core';
 import {ANIMATION_MODULE_TYPE} from '@angular/platform-browser/animations';
 import {SpecificEventListener, EventType} from '@material/base';
 import {MDCSliderAdapter, MDCSliderFoundation, Thumb, TickMark} from '@material/slider';
@@ -101,9 +91,6 @@ export class MatSliderVisualThumb implements AfterViewInit, OnDestroy {
   /** Whether ripples on the slider thumb should be disabled. */
   @Input() disableRipple: boolean = false;
 
-  /** The MatRipple for this slider thumb. */
-  @ViewChild(MatRipple) private readonly _ripple: MatRipple;
-
   /** The slider thumb knob. */
   @ViewChild('knob') _knob: ElementRef<HTMLElement>;
 
@@ -113,15 +100,6 @@ export class MatSliderVisualThumb implements AfterViewInit, OnDestroy {
 
   /** The slider input corresponding to this slider thumb. */
   private _sliderInput: MatSliderThumb;
-
-  /** The RippleRef for the slider thumbs hover state. */
-  private _hoverRippleRef: RippleRef | undefined;
-
-  /** The RippleRef for the slider thumbs focus state. */
-  private _focusRippleRef: RippleRef | undefined;
-
-  /** The RippleRef for the slider thumbs active state. */
-  private _activeRippleRef: RippleRef | undefined;
 
   /** Whether the slider thumb is currently being pressed. */
   private _isActive: boolean = false;
@@ -136,15 +114,11 @@ export class MatSliderVisualThumb implements AfterViewInit, OnDestroy {
   ) {}
 
   ngAfterViewInit() {
-    this._ripple.radius = 24;
     this._sliderInput = this._slider._getInput(this.thumbPosition);
 
     // Note that we don't unsubscribe from these, because they're complete on destroy.
     this._sliderInput.dragStart.subscribe(event => this._onDragStart(event));
     this._sliderInput.dragEnd.subscribe(event => this._onDragEnd(event));
-
-    this._sliderInput._focus.subscribe(() => this._onFocus());
-    this._sliderInput._blur.subscribe(() => this._onBlur());
 
     // These two listeners don't update any data bindings so we bind them
     // outside of the NgZone to prevent Angular from needlessly running change detection.
@@ -166,94 +140,22 @@ export class MatSliderVisualThumb implements AfterViewInit, OnDestroy {
 
   private _onMouseEnter = (): void => {
     this._isHovered = true;
-    // We don't want to show the hover ripple on top of the focus ripple.
-    // This can happen if the user tabs to a thumb and then the user moves their cursor over it.
-    if (!this._isShowingRipple(this._focusRippleRef)) {
-      this._showHoverRipple();
-    }
   };
 
   private _onMouseLeave = (): void => {
     this._isHovered = false;
-    this._hoverRippleRef?.fadeOut();
   };
-
-  private _onFocus(): void {
-    // We don't want to show the hover ripple on top of the focus ripple.
-    // Happen when the users cursor is over a thumb and then the user tabs to it.
-    this._hoverRippleRef?.fadeOut();
-    this._showFocusRipple();
-  }
-
-  private _onBlur(): void {
-    // Happens when the user tabs away while still dragging a thumb.
-    if (!this._isActive) {
-      this._focusRippleRef?.fadeOut();
-    }
-    // Happens when the user tabs away from a thumb but their cursor is still over it.
-    if (this._isHovered) {
-      this._showHoverRipple();
-    }
-  }
 
   private _onDragStart(event: MatSliderDragEvent): void {
     if (event.source._thumbPosition === this.thumbPosition) {
       this._isActive = true;
-      this._showActiveRipple();
     }
   }
 
   private _onDragEnd(event: MatSliderDragEvent): void {
     if (event.source._thumbPosition === this.thumbPosition) {
       this._isActive = false;
-      this._activeRippleRef?.fadeOut();
-      // Happens when the user starts dragging a thumb, tabs away, and then stops dragging.
-      if (!this._sliderInput._isFocused()) {
-        this._focusRippleRef?.fadeOut();
-      }
     }
-  }
-
-  /** Handles displaying the hover ripple. */
-  private _showHoverRipple(): void {
-    if (!this._isShowingRipple(this._hoverRippleRef)) {
-      this._hoverRippleRef = this._showRipple({enterDuration: 0, exitDuration: 0});
-      this._hoverRippleRef?.element.classList.add('mat-mdc-slider-hover-ripple');
-    }
-  }
-
-  /** Handles displaying the focus ripple. */
-  private _showFocusRipple(): void {
-    // Show the focus ripple event if noop animations are enabled.
-    if (!this._isShowingRipple(this._focusRippleRef)) {
-      this._focusRippleRef = this._showRipple({enterDuration: 0, exitDuration: 0});
-      this._focusRippleRef?.element.classList.add('mat-mdc-slider-focus-ripple');
-    }
-  }
-
-  /** Handles displaying the active ripple. */
-  private _showActiveRipple(): void {
-    if (!this._isShowingRipple(this._activeRippleRef)) {
-      this._activeRippleRef = this._showRipple({enterDuration: 225, exitDuration: 400});
-      this._activeRippleRef?.element.classList.add('mat-mdc-slider-active-ripple');
-    }
-  }
-
-  /** Whether the given rippleRef is currently fading in or visible. */
-  private _isShowingRipple(rippleRef?: RippleRef): boolean {
-    return rippleRef?.state === RippleState.FADING_IN || rippleRef?.state === RippleState.VISIBLE;
-  }
-
-  /** Manually launches the slider thumb ripple using the specified ripple animation config. */
-  private _showRipple(animation: RippleAnimationConfig): RippleRef | undefined {
-    if (this.disableRipple) {
-      return;
-    }
-    return this._ripple.launch({
-      animation: this._slider._noopAnimations ? {enterDuration: 0, exitDuration: 0} : animation,
-      centered: true,
-      persistent: true,
-    });
   }
 
   /** Gets the hosts native HTML element. */
@@ -701,9 +603,6 @@ export class MatSlider
     readonly _globalChangeAndInputListener: GlobalChangeAndInputListener<'input' | 'change'>,
     @Inject(DOCUMENT) document: any,
     @Optional() private _dir: Directionality,
-    @Optional()
-    @Inject(MAT_RIPPLE_GLOBAL_OPTIONS)
-    readonly _globalRippleOptions?: RippleGlobalOptions,
     @Optional() @Inject(ANIMATION_MODULE_TYPE) animationMode?: string,
   ) {
     super(elementRef);
@@ -917,7 +816,7 @@ export class MatSlider
 
   /** Whether the slider thumb ripples should be disabled. */
   _isRippleDisabled(): boolean {
-    return this.disabled || this.disableRipple || !!this._globalRippleOptions?.disabled;
+    return this.disabled || this.disableRipple;
   }
 }
 

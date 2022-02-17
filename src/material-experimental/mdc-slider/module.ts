@@ -8,11 +8,12 @@
 
 import {CommonModule} from '@angular/common';
 import {NgModule} from '@angular/core';
-import {MatCommonModule, MatRippleModule} from '@angular/material-experimental/mdc-core';
+import {MatCommonModule} from '@angular/material-experimental/mdc-core';
 import {MatSlider, MatSliderThumb, MatSliderVisualThumb} from './slider';
+import {MdcRippleModule} from '../mdc-ripple';
 
 @NgModule({
-  imports: [MatCommonModule, CommonModule, MatRippleModule],
+  imports: [MatCommonModule, CommonModule, MdcRippleModule],
   exports: [MatSlider, MatSliderThumb],
   declarations: [MatSlider, MatSliderThumb, MatSliderVisualThumb],
 })
