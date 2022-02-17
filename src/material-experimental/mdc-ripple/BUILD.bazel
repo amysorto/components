@@ -1,0 +1,16 @@
+load("//tools:defaults.bzl", "ng_module")
+
+package(default_visibility = ["//visibility:public"])
+
+ng_module(
+    name = "mdc-ripple",
+    srcs = glob(
+        ["**/*.ts"],
+        exclude = ["**/*.spec.ts"],
+    ),
+    deps = [
+        "//src/material-experimental/mdc-core",
+        "@npm//@material/base",
+        "@npm//@material/ripple",
+    ],
+)

@@ -76,5 +76,5 @@ MATERIAL_EXPERIMENTAL_SCSS_LIBS = [
     # Only secondary entry-points declare theme files currently. Entry-points
     # which contain a slash are not in the top-level.
     for ep in MATERIAL_EXPERIMENTAL_ENTRYPOINTS
-    if not "/" in ep
+    if ((not "/" in ep) and ("mdc-ripple" not in ep))
 ]

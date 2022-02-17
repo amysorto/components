@@ -115,6 +115,7 @@
 /src/material-experimental/mdc-progress-spinner/** @andrewseguin
 /src/material-experimental/mdc-progress-bar/**     @andrewseguin
 /src/material-experimental/mdc-radio/**            @mmalerba
+/src/material-experimental/mdc-ripple/**           @amysorto
 /src/material-experimental/mdc-snack-bar/**        @andrewseguin
 /src/material-experimental/mdc-slide-toggle/**     @crisbeto
 /src/material-experimental/mdc-slider/**           @devversion

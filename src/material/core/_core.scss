@@ -3,14 +3,19 @@
 @use '../../cdk/text-field';
 
 // Core styles that can be used to apply material design treatments to any element.
-@use './ripple/ripple';
+// TODO(amysorto): add back this ripple import for non MDC components
+// @use './ripple/ripple';
 @use './focus-indicators/focus-indicators';
 @use './typography/all-typography';
+@use "@material/ripple";
+
+@import "@material/ripple/mixins";
+
 
 // Mixin that renders all of the core styles that are not theme-dependent.
 @mixin core($typography-config: null) {
   @include all-typography.all-component-typographies($typography-config);
-  @include ripple.ripple();
+  // @include ripple.ripple();
   @include a11y.a11y-visually-hidden();
   @include overlay.overlay();
   @include text-field.text-field-autosize();
@@ -23,6 +28,14 @@
 // Mixin that renders all of the core MDC styles. Private mixin included with `mat-core`.
 @mixin _mdc-core() {
   @include _mdc-strong-focus-indicators-positioning();
+
+  // TODO(amysorto): needs to be configurable once customizability added in
+  .ripple-surface {
+    @include ripple.surface;
+    // @include ripple.radius-bounded;
+    @include ripple.radius-unbounded;
+    @include ripple.states;
+  }
 }
 
 // Mixin that ensures focus indicator host elements are positioned so that the focus indicator
