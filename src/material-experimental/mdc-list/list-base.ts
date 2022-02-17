@@ -20,13 +20,6 @@ import {
   Optional,
   QueryList,
 } from '@angular/core';
-import {
-  MAT_RIPPLE_GLOBAL_OPTIONS,
-  RippleConfig,
-  RippleGlobalOptions,
-  RippleRenderer,
-  RippleTarget,
-} from '@angular/material-experimental/mdc-core';
 import {ANIMATION_MODULE_TYPE} from '@angular/platform-browser/animations';
 import {Subscription, merge} from 'rxjs';
 import {
@@ -43,7 +36,7 @@ import {
   },
 })
 /** @docs-private */
-export abstract class MatListItemBase implements AfterViewInit, OnDestroy, RippleTarget {
+export abstract class MatListItemBase implements AfterViewInit, OnDestroy {
   /** Query list matching list-item line elements. */
   abstract _lines: QueryList<MatListItemLine> | undefined;
 
@@ -106,7 +99,6 @@ export abstract class MatListItemBase implements AfterViewInit, OnDestroy, Rippl
   private _disabled = false;
 
   private _subscriptions = new Subscription();
-  private _rippleRenderer: RippleRenderer | null = null;
 
   /** Whether the list item has unscoped text content. */
   _hasUnscopedTextContent: boolean = false;
@@ -115,14 +107,8 @@ export abstract class MatListItemBase implements AfterViewInit, OnDestroy, Rippl
    * Implemented as part of `RippleTarget`.
    * @docs-private
    */
-  rippleConfig: RippleConfig & RippleGlobalOptions;
-
-  /**
-   * Implemented as part of `RippleTarget`.
-   * @docs-private
-   */
   get rippleDisabled(): boolean {
-    return this.disableRipple || !!this.rippleConfig.disabled;
+    return this.disableRipple;
   }
 
   protected constructor(
@@ -130,12 +116,8 @@ export abstract class MatListItemBase implements AfterViewInit, OnDestroy, Rippl
     protected _ngZone: NgZone,
     private _listBase: MatListBase,
     private _platform: Platform,
-    @Optional()
-    @Inject(MAT_RIPPLE_GLOBAL_OPTIONS)
-    globalRippleOptions?: RippleGlobalOptions,
     @Optional() @Inject(ANIMATION_MODULE_TYPE) animationMode?: string,
   ) {
-    this.rippleConfig = globalRippleOptions || {};
     this._hostElement = this._elementRef.nativeElement;
     this._noopAnimations = animationMode === 'NoopAnimations';
 
@@ -161,9 +143,6 @@ export abstract class MatListItemBase implements AfterViewInit, OnDestroy, Rippl
 
   ngOnDestroy() {
     this._subscriptions.unsubscribe();
-    if (this._rippleRenderer !== null) {
-      this._rippleRenderer._removeTriggerEvents();
-    }
   }
 
   /** Gets the label for the list item. This is used for the typeahead. */
@@ -182,13 +161,6 @@ export abstract class MatListItemBase implements AfterViewInit, OnDestroy, Rippl
 
   private _initInteractiveListItem() {
     this._hostElement.classList.add('mat-mdc-list-item-interactive');
-    this._rippleRenderer = new RippleRenderer(
-      this,
-      this._ngZone,
-      this._hostElement,
-      this._platform,
-    );
-    this._rippleRenderer.setupTriggerEvents(this._hostElement);
   }
 
   /**

@@ -8,11 +8,7 @@
 
 import {CommonModule} from '@angular/common';
 import {NgModule} from '@angular/core';
-import {
-  MatPseudoCheckboxModule,
-  MatRippleModule,
-  MatCommonModule,
-} from '@angular/material-experimental/mdc-core';
+import {MatPseudoCheckboxModule, MatCommonModule} from '@angular/material-experimental/mdc-core';
 import {MatDividerModule} from '@angular/material/divider';
 import {MatActionList} from './action-list';
 import {MatList, MatListItem} from './list';
@@ -28,14 +24,15 @@ import {
 import {MatNavList} from './nav-list';
 import {MatSelectionList} from './selection-list';
 import {ObserversModule} from '@angular/cdk/observers';
+import {MdcRippleModule} from '../mdc-ripple';
 
 @NgModule({
   imports: [
     ObserversModule,
     CommonModule,
     MatCommonModule,
-    MatRippleModule,
     MatPseudoCheckboxModule,
+    MdcRippleModule,
   ],
   exports: [
     MatList,

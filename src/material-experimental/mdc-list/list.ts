@@ -19,10 +19,6 @@ import {
   ViewChild,
   ViewEncapsulation,
 } from '@angular/core';
-import {
-  MAT_RIPPLE_GLOBAL_OPTIONS,
-  RippleGlobalOptions,
-} from '@angular/material-experimental/mdc-core';
 import {ANIMATION_MODULE_TYPE} from '@angular/platform-browser/animations';
 import {MatListBase, MatListItemBase} from './list-base';
 import {MatListItemLine, MatListItemMeta, MatListItemTitle} from './list-item-sections';
@@ -67,9 +63,8 @@ export class MatListItem extends MatListItemBase {
     ngZone: NgZone,
     listBase: MatListBase,
     platform: Platform,
-    @Optional() @Inject(MAT_RIPPLE_GLOBAL_OPTIONS) globalRippleOptions?: RippleGlobalOptions,
     @Optional() @Inject(ANIMATION_MODULE_TYPE) animationMode?: string,
   ) {
-    super(element, ngZone, listBase, platform, globalRippleOptions, animationMode);
+    super(element, ngZone, listBase, platform, animationMode);
   }
 }

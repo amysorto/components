@@ -28,6 +28,7 @@ ng_module(
         "//src/cdk/collections",
         "//src/cdk/observers",
         "//src/material-experimental/mdc-core",
+        "//src/material-experimental/mdc-ripple",
         "//src/material/divider",
         "//src/material/list",
         "@npm//@angular/core",
