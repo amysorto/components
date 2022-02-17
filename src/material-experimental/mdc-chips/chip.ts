@@ -33,12 +33,9 @@ import {
   CanDisable,
   CanDisableRipple,
   HasTabIndex,
-  MatRipple,
-  MAT_RIPPLE_GLOBAL_OPTIONS,
   mixinColor,
   mixinDisableRipple,
   mixinTabIndex,
-  RippleGlobalOptions,
 } from '@angular/material-experimental/mdc-core';
 import {
   MDCChipFoundation,
@@ -90,7 +87,7 @@ const _MatChipMixinBase = mixinTabIndex(mixinColor(mixinDisableRipple(MatChipBas
  */
 @Component({
   selector: 'mat-basic-chip, mat-chip',
-  inputs: ['color', 'disableRipple', 'tabIndex'],
+  inputs: ['color', 'tabIndex'],
   exportAs: 'matChip',
   templateUrl: 'chip.html',
   styleUrls: ['chip.css'],
@@ -232,9 +229,6 @@ export class MatChip
   /** The chip's trailing remove icon. */
   @ContentChild(MAT_CHIP_REMOVE) removeIcon: MatChipRemove;
 
-  /** Reference to the MatRipple instance of the chip. */
-  @ViewChild(MatRipple) ripple: MatRipple;
-
   /** Action receiving the primary set of user interactions. */
   @ViewChild(MatChipAction) primaryAction: MatChipAction;
 
@@ -300,9 +294,6 @@ export class MatChip
     @Inject(DOCUMENT) _document: any,
     @Optional() private _dir: Directionality,
     @Optional() @Inject(ANIMATION_MODULE_TYPE) animationMode?: string,
-    @Optional()
-    @Inject(MAT_RIPPLE_GLOBAL_OPTIONS)
-    private _globalRippleOptions?: RippleGlobalOptions,
     @Attribute('tabindex') tabIndex?: string,
   ) {
     super(elementRef);
@@ -369,13 +360,7 @@ export class MatChip
 
   /** Whether or not the ripple should be disabled. */
   _isRippleDisabled(): boolean {
-    return (
-      this.disabled ||
-      this.disableRipple ||
-      this._animationsDisabled ||
-      this._isBasicChip ||
-      !!this._globalRippleOptions?.disabled
-    );
+    return this.disabled || this.disableRipple || this._animationsDisabled || this._isBasicChip;
   }
 
   _getAction(type: MDCChipActionType): MDCChipActionFoundation | undefined {

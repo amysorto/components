@@ -27,10 +27,6 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import {DOCUMENT} from '@angular/common';
-import {
-  MAT_RIPPLE_GLOBAL_OPTIONS,
-  RippleGlobalOptions,
-} from '@angular/material-experimental/mdc-core';
 import {FocusMonitor} from '@angular/cdk/a11y';
 import {MatChip, MatChipEvent} from './chip';
 import {MatChipEditInput} from './chip-edit-input';
@@ -49,7 +45,7 @@ export interface MatChipEditedEvent extends MatChipEvent {
   selector: 'mat-chip-row, mat-basic-chip-row',
   templateUrl: 'chip-row.html',
   styleUrls: ['chip.css'],
-  inputs: ['color', 'disableRipple', 'tabIndex'],
+  inputs: ['color', 'tabIndex'],
   host: {
     'class': 'mat-mdc-chip mat-mdc-chip-row mdc-evolution-chip',
     '[class.mat-mdc-chip-with-avatar]': 'leadingIcon',
@@ -108,9 +104,6 @@ export class MatChipRow extends MatChip implements AfterViewInit {
     @Inject(DOCUMENT) _document: any,
     @Optional() dir: Directionality,
     @Optional() @Inject(ANIMATION_MODULE_TYPE) animationMode?: string,
-    @Optional()
-    @Inject(MAT_RIPPLE_GLOBAL_OPTIONS)
-    globalRippleOptions?: RippleGlobalOptions,
     @Attribute('tabindex') tabIndex?: string,
   ) {
     super(
@@ -121,7 +114,6 @@ export class MatChipRow extends MatChip implements AfterViewInit {
       _document,
       dir,
       animationMode,
-      globalRippleOptions,
       tabIndex,
     );
 

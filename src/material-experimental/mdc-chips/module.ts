@@ -9,11 +9,7 @@
 import {ENTER} from '@angular/cdk/keycodes';
 import {CommonModule} from '@angular/common';
 import {NgModule} from '@angular/core';
-import {
-  ErrorStateMatcher,
-  MatCommonModule,
-  MatRippleModule,
-} from '@angular/material-experimental/mdc-core';
+import {ErrorStateMatcher, MatCommonModule} from '@angular/material-experimental/mdc-core';
 import {MatChip} from './chip';
 import {MAT_CHIPS_DEFAULT_OPTIONS, MatChipsDefaultOptions} from './chip-default-options';
 import {MatChipEditInput} from './chip-edit-input';
@@ -25,6 +21,7 @@ import {MatChipRow} from './chip-row';
 import {MatChipOption} from './chip-option';
 import {MatChipSet} from './chip-set';
 import {MatChipAction} from './chip-action';
+import {MdcRippleModule} from '../mdc-ripple';
 
 const CHIP_DECLARATIONS = [
   MatChip,
@@ -41,7 +38,7 @@ const CHIP_DECLARATIONS = [
 ];
 
 @NgModule({
-  imports: [MatCommonModule, CommonModule, MatRippleModule],
+  imports: [MatCommonModule, CommonModule, MdcRippleModule],
   exports: [MatCommonModule, CHIP_DECLARATIONS],
   declarations: [MatChipAction, CHIP_DECLARATIONS],
   providers: [

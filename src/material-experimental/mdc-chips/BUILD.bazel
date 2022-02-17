@@ -25,6 +25,7 @@ ng_module(
         "//src:dev_mode_types",
         "//src/material-experimental/mdc-core",
         "//src/material-experimental/mdc-form-field",
+        "//src/material-experimental/mdc-ripple",
         "@npm//@angular/animations",
         "@npm//@angular/common",
         "@npm//@angular/core",
