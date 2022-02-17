@@ -8,7 +8,7 @@
 
 import {CommonModule} from '@angular/common';
 import {NgModule} from '@angular/core';
-import {MatCommonModule, MatRippleModule} from '@angular/material-experimental/mdc-core';
+import {MatCommonModule} from '@angular/material-experimental/mdc-core';
 import {PortalModule} from '@angular/cdk/portal';
 import {ObserversModule} from '@angular/cdk/observers';
 import {A11yModule} from '@angular/cdk/a11y';
@@ -20,13 +20,14 @@ import {MatTab} from './tab';
 import {MatTabHeader} from './tab-header';
 import {MatTabGroup} from './tab-group';
 import {MatTabNav, MatTabNavPanel, MatTabLink} from './tab-nav-bar/tab-nav-bar';
+import {MdcRippleModule} from '../mdc-ripple';
 
 @NgModule({
   imports: [
     CommonModule,
     MatCommonModule,
     PortalModule,
-    MatRippleModule,
+    MdcRippleModule,
     ObserversModule,
     A11yModule,
   ],

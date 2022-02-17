@@ -35,6 +35,7 @@ ng_module(
         "//src/cdk/portal",
         "//src/cdk/scrolling",
         "//src/material-experimental/mdc-core",
+        "//src/material-experimental/mdc-ripple",
         "//src/material/tabs",
         "@npm//@angular/animations",
         "@npm//@angular/common",

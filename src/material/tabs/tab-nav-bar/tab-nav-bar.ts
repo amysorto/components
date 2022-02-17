@@ -207,13 +207,7 @@ const _MatTabLinkMixinBase = mixinTabIndex(mixinDisableRipple(mixinDisabled(clas
 @Directive()
 export class _MatTabLinkBase
   extends _MatTabLinkMixinBase
-  implements
-    AfterViewInit,
-    OnDestroy,
-    CanDisable,
-    CanDisableRipple,
-    HasTabIndex,
-    FocusableOption
+  implements AfterViewInit, OnDestroy, CanDisable, CanDisableRipple, HasTabIndex, FocusableOption
 {
   /** Whether the tab link is active or not. */
   protected _isActive: boolean = false;
@@ -237,11 +231,7 @@ export class _MatTabLinkBase
    * @docs-private
    */
   get rippleDisabled(): boolean {
-    return (
-      this.disabled ||
-      this.disableRipple ||
-      this._tabNavBar.disableRipple
-    );
+    return this.disabled || this.disableRipple || this._tabNavBar.disableRipple;
   }
 
   /** Unique id for the tab. */

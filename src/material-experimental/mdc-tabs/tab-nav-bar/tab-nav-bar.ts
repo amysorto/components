@@ -25,10 +25,6 @@ import {
   Input,
 } from '@angular/core';
 import {ANIMATION_MODULE_TYPE} from '@angular/platform-browser/animations';
-import {
-  MAT_RIPPLE_GLOBAL_OPTIONS,
-  RippleGlobalOptions,
-} from '@angular/material-experimental/mdc-core';
 import {FocusMonitor} from '@angular/cdk/a11y';
 import {
   _MatTabNavBase,
@@ -122,7 +118,7 @@ export class MatTabNav extends _MatTabNavBase implements AfterContentInit {
 @Component({
   selector: '[mat-tab-link], [matTabLink]',
   exportAs: 'matTabLink',
-  inputs: ['disabled', 'disableRipple', 'tabIndex'],
+  inputs: ['disabled', 'tabIndex'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   templateUrl: 'tab-link.html',
@@ -150,13 +146,12 @@ export class MatTabLink extends _MatTabLinkBase implements MatInkBarItem, OnInit
   constructor(
     tabNavBar: MatTabNav,
     elementRef: ElementRef,
-    @Optional() @Inject(MAT_RIPPLE_GLOBAL_OPTIONS) globalRippleOptions: RippleGlobalOptions | null,
     @Attribute('tabindex') tabIndex: string,
     focusMonitor: FocusMonitor,
     @Inject(DOCUMENT) private _document: any,
     @Optional() @Inject(ANIMATION_MODULE_TYPE) animationMode?: string,
   ) {
-    super(tabNavBar, elementRef, globalRippleOptions, tabIndex, focusMonitor, animationMode);
+    super(tabNavBar, elementRef, tabIndex, focusMonitor, animationMode);
 
     tabNavBar._fitInkBarToContent.pipe(takeUntil(this._destroyed)).subscribe(fitInkBarToContent => {
       this._foundation.setFitToContent(fitInkBarToContent);
