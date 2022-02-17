@@ -12,7 +12,6 @@ import {
   CanColor,
   CanDisable,
   CanDisableRipple,
-  MatRipple,
   mixinColor,
   mixinDisabled,
   mixinDisableRipple,
@@ -20,7 +19,7 @@ import {
 import {FocusOrigin} from '@angular/cdk/a11y';
 
 /** Inputs common to all buttons. */
-export const MAT_BUTTON_INPUTS = ['disabled', 'disableRipple', 'color'];
+export const MAT_BUTTON_INPUTS = ['disabled', 'color'];
 
 /** Shared host configuration for all buttons */
 export const MAT_BUTTON_HOST = {
@@ -90,9 +89,6 @@ export class MatButtonBase
 
   /** Whether this button is an icon button. Used to apply the correct class on the ripple. */
   _isIconButton = false;
-
-  /** Reference to the MatRipple instance of the button. */
-  @ViewChild(MatRipple) ripple: MatRipple;
 
   constructor(
     elementRef: ElementRef,

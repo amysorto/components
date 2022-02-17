@@ -36,14 +36,9 @@ import {
   CanDisable,
   CanDisableRipple,
   HasTabIndex,
-  MAT_RIPPLE_GLOBAL_OPTIONS,
   mixinDisabled,
   mixinDisableRipple,
   mixinTabIndex,
-  RippleConfig,
-  RippleGlobalOptions,
-  RippleRenderer,
-  RippleTarget,
   ThemePalette,
 } from '@angular/material/core';
 import {ANIMATION_MODULE_TYPE} from '@angular/platform-browser/animations';
@@ -218,7 +213,6 @@ export class _MatTabLinkBase
     CanDisable,
     CanDisableRipple,
     HasTabIndex,
-    RippleTarget,
     FocusableOption
 {
   /** Whether the tab link is active or not. */
@@ -239,14 +233,6 @@ export class _MatTabLinkBase
   }
 
   /**
-   * Ripple configuration for ripples that are launched on pointer down. The ripple config
-   * is set to the global ripple options since we don't have any configurable options for
-   * the tab link ripples.
-   * @docs-private
-   */
-  rippleConfig: RippleConfig & RippleGlobalOptions;
-
-  /**
    * Whether ripples are disabled on interaction.
    * @docs-private
    */
@@ -254,8 +240,7 @@ export class _MatTabLinkBase
     return (
       this.disabled ||
       this.disableRipple ||
-      this._tabNavBar.disableRipple ||
-      !!this.rippleConfig.disabled
+      this._tabNavBar.disableRipple
     );
   }
 
@@ -265,19 +250,13 @@ export class _MatTabLinkBase
   constructor(
     private _tabNavBar: _MatTabNavBase,
     /** @docs-private */ public elementRef: ElementRef,
-    @Optional() @Inject(MAT_RIPPLE_GLOBAL_OPTIONS) globalRippleOptions: RippleGlobalOptions | null,
     @Attribute('tabindex') tabIndex: string,
     private _focusMonitor: FocusMonitor,
     @Optional() @Inject(ANIMATION_MODULE_TYPE) animationMode?: string,
   ) {
     super();
 
-    this.rippleConfig = globalRippleOptions || {};
     this.tabIndex = parseInt(tabIndex) || 0;
-
-    if (animationMode === 'NoopAnimations') {
-      this.rippleConfig.animation = {enterDuration: 0, exitDuration: 0};
-    }
   }
 
   /** Focuses the tab link. */
@@ -342,7 +321,7 @@ export class _MatTabLinkBase
 @Directive({
   selector: '[mat-tab-link], [matTabLink]',
   exportAs: 'matTabLink',
-  inputs: ['disabled', 'disableRipple', 'tabIndex'],
+  inputs: ['disabled', 'tabIndex'],
   host: {
     'class': 'mat-tab-link mat-focus-indicator',
     '[attr.aria-controls]': '_getAriaControls()',
@@ -359,27 +338,20 @@ export class _MatTabLinkBase
   },
 })
 export class MatTabLink extends _MatTabLinkBase implements OnDestroy {
-  /** Reference to the RippleRenderer for the tab-link. */
-  private _tabLinkRipple: RippleRenderer;
-
   constructor(
     tabNavBar: MatTabNav,
     elementRef: ElementRef,
     ngZone: NgZone,
     platform: Platform,
-    @Optional() @Inject(MAT_RIPPLE_GLOBAL_OPTIONS) globalRippleOptions: RippleGlobalOptions | null,
     @Attribute('tabindex') tabIndex: string,
     focusMonitor: FocusMonitor,
     @Optional() @Inject(ANIMATION_MODULE_TYPE) animationMode?: string,
   ) {
-    super(tabNavBar, elementRef, globalRippleOptions, tabIndex, focusMonitor, animationMode);
-    this._tabLinkRipple = new RippleRenderer(this, ngZone, elementRef, platform);
-    this._tabLinkRipple.setupTriggerEvents(elementRef.nativeElement);
+    super(tabNavBar, elementRef, tabIndex, focusMonitor, animationMode);
   }
 
   override ngOnDestroy() {
     super.ngOnDestroy();
-    this._tabLinkRipple._removeTriggerEvents();
   }
 }
 
