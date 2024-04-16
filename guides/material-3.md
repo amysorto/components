@@ -78,7 +78,7 @@ used with the `primary` and `tertiary` options:
 - `$m3-violet-palette`
 - `$m3-rose-palette`
 
-For more customization, you can run a schematic to generate a scss file with
+For more customization, you can run a [schematic](https://github.com/angular/components/blob/main/src/material/schematics/ng-generate/m3-theme/README.md) to generate a scss file with
 theme(s) that use custom colors. You can specify a color to represent the
 primary color palette and the rest of the color palettes (secondary, tertiary,
 neutral) are generated from Material. The generated color palettes are
@@ -97,12 +97,18 @@ You can then import the generated theme scss file to use `$m3-light-theme` and/o
 `$m3-dark-theme` to where you apply your themes.
 
 ```scss
-@import './path/to/m3-theme';
+@use './path/to/m3-theme';
 
-html {
-  // Apply the base theme at the root, so it will be inherited by the whole app.
-  @include mat.all-component-themes($m3-light-theme);
-  @include mat.all-component-themes($m3-dark-theme);
+// Apply the light theme by default
+@include mat.core-theme($m3-light-theme);
+@include mat.button-theme($m3-light-theme);
+
+// Apply the dark theme only when the user prefers dark themes.
+@media (prefers-color-scheme: dark) {
+ // Use the `-color` mixins to only apply color styles without reapplying the same
+ // typography and density styles.
+ @include mat.core-color($m3-dark-theme);
+ @include mat.button-color($m3-dark-theme);
 }
 ```
 
